@@ -81,6 +81,13 @@ flutter run
 
 By default the app connects to `http://localhost:8080`. To change the backend URL, edit `lib/config/api_config.dart`.
 
+### GitHub Pages (kago.lelar.ge)
+
+The web build is deployed via GitHub Actions to GitHub Pages.
+
+- **Frontend**: `https://kago.lelar.ge`
+- **Backend API**: `https://api.kago.lelar.ge` (injected at build time via `--dart-define=API_BASE_URL=...`)
+
 ### Screens
 
 - **Haltestellen** — search stops, tap to see departures
