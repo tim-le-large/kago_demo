@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+
+# Local Spring overrides (never commit)
+backend/src/main/resources/application-local.properties
+

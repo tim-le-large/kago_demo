@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Local secrets / overrides
+.env
+src/main/resources/application-local.properties

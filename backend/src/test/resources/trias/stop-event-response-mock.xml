@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Body>
+    <Trias xmlns="http://www.vdv.de/trias" version="1.2">
+      <ServiceDelivery>
+        <ResponseTimestamp>2026-04-02T12:00:00Z</ResponseTimestamp>
+        <StopEventResponse>
+          <StopEventResult>
+            <StopEvent>
+              <ThisCall>
+                <CallAtStop>
+                  <ServiceDeparture>
+                    <TimetabledTime>2026-04-02T14:05:00+01:00</TimetabledTime>
+                  </ServiceDeparture>
+                </CallAtStop>
+              </ThisCall>
+              <Service>
+                <PublishedLineName>S2</PublishedLineName>
+              </Service>
+              <DestinationText>Rheinstetten</DestinationText>
+            </StopEvent>
+            <StopEvent>
+              <ThisCall>
+                <CallAtStop>
+                  <ServiceDeparture>
+                    <TimetabledTime>2026-04-02T14:12:00+01:00</TimetabledTime>
+                  </ServiceDeparture>
+                </CallAtStop>
+              </ThisCall>
+              <Service>
+                <PublishedLineName>5</PublishedLineName>
+              </Service>
+              <DestinationText>Durlach</DestinationText>
+            </StopEvent>
+          </StopEventResult>
+        </StopEventResponse>
+      </ServiceDelivery>
+    </Trias>
+  </soap:Body>
+</soap:Envelope>
