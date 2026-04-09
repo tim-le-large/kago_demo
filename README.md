@@ -45,6 +45,28 @@ cd backend
 
 Tests use a mock HTTP server and fixture XML — no live KVV access needed.
 
+### Render (Docker)
+
+Render has no native Java runtime; deploy the API as a **Docker** Web Service.
+
+1. **New → Web Service** → connect this repo.
+2. **Root Directory:** `backend`
+3. **Dockerfile Path:** `Dockerfile` (default when root is `backend`).
+4. **Environment** (Render dashboard):  
+   `TRIAS_ENDPOINT`, `TRIAS_REQUESTOR_REF` (secret), optionally `TRIAS_DUMP_REQUESTS=false`.  
+   Render sets `PORT`; the image listens via `server.port=${PORT:8080}` in `application.properties`.
+
+Local smoke test (requires Docker):
+
+```bash
+cd backend
+docker build -t ka-abfahrt-api .
+docker run --rm -p 8080:8080 \
+  -e TRIAS_REQUESTOR_REF=your-ref \
+  -e TRIAS_ENDPOINT=https://projekte.kvv-efa.de/lelargetrias/trias \
+  ka-abfahrt-api
+```
+
 ## Frontend
 
 Flutter 3 / Dart / BLoC. Talks to the backend REST API.
@@ -63,7 +85,7 @@ By default the app connects to `http://localhost:8080`. To change the backend UR
 
 - **Haltestellen** — search stops, tap to see departures
 - **Abfahrten** — live departure board for a stop
-- **Verbindung** — trip search (placeholder)
+- **Verbindung** — trip search
 
 ### Fake mode
 
