@@ -2,9 +2,9 @@ name = "kago-api"
 main = "src/index.ts"
 compatibility_date = "2026-04-18"
 
-[routes]
-pattern = "api.kago.lelar.ge/*"
-custom_domain = true
-
 [vars]
 TRIAS_ENDPOINT = "https://projekte.kvv-efa.de/lelargetrias/trias"
+
+routes = [
+  { pattern = "api.kago.lelar.ge", custom_domain = true }
+]
