@@ -1,20 +1,20 @@
 # KA Abfahrt
 
-Flutter app + Spring Boot backend for live KVV transit data via the TRIAS API.
+Flutter app + lightweight API proxy for live KVV transit data via the TRIAS API.
 
-## Backend
+## API proxy (no Spring Boot)
 
-Java 17 / Spring Boot 4 / Gradle. Proxies the KVV TRIAS XML interface and exposes a JSON REST API.
+Cloudflare Worker (TypeScript). Proxies the KVV TRIAS XML interface and exposes a JSON REST API.
 
 ### Setup
 
 ```bash
-cd backend
-cp .env.example .env   # then fill in TRIAS_REQUESTOR_REF
-./gradlew bootRun       # starts on http://localhost:8080
+cd api-proxy
+npm install
+export TRIAS_ENDPOINT=https://projekte.kvv-efa.de/lelargetrias/trias
+export TRIAS_REQUESTOR_REF=your-ref
+npm run dev   # starts on http://127.0.0.1:8787
 ```
-
-The `.env` file is loaded automatically by the `bootRun` task.
 
 ### API
 
@@ -36,57 +36,25 @@ The `.env` file is loaded automatically by the `bootRun` task.
 
 `departureTime` is optional (defaults to now). Stop IDs come from the locations endpoint.
 
-### Tests
-
-```bash
-cd backend
-./gradlew test
-```
-
-Tests use a mock HTTP server and fixture XML — no live KVV access needed.
-
-### Render (Docker)
-
-Render has no native Java runtime; deploy the API as a **Docker** Web Service.
-
-1. **New → Web Service** → connect this repo.
-2. **Root Directory:** `backend`
-3. **Dockerfile Path:** `Dockerfile` (default when root is `backend`).
-4. **Environment** (Render dashboard):  
-   `TRIAS_ENDPOINT`, `TRIAS_REQUESTOR_REF` (secret), optionally `TRIAS_DUMP_REQUESTS=false`.  
-   Render sets `PORT`; the image listens via `server.port=${PORT:8080}` in `application.properties`.
-
-Local smoke test (requires Docker):
-
-```bash
-cd backend
-docker build -t ka-abfahrt-api .
-docker run --rm -p 8080:8080 \
-  -e TRIAS_REQUESTOR_REF=your-ref \
-  -e TRIAS_ENDPOINT=https://projekte.kvv-efa.de/lelargetrias/trias \
-  ka-abfahrt-api
-```
-
 ## Frontend
 
-Flutter 3 / Dart / BLoC. Talks to the backend REST API.
+Flutter 3 / Dart / BLoC. Talks to the API proxy REST API.
 
 ### Setup
 
 ```bash
-cd frontend
 flutter pub get
 flutter run
 ```
 
-By default the app connects to `http://localhost:8080`. To change the backend URL, edit `lib/config/api_config.dart`.
+By default the app connects to `http://127.0.0.1:8787`. To change the API URL, edit `lib/config/api_config.dart` or set `--dart-define=API_BASE_URL=...`.
 
 ### GitHub Pages (kago.lelar.ge)
 
 The web build is deployed via GitHub Actions to GitHub Pages.
 
 - **Frontend**: `https://kago.lelar.ge`
-- **Backend API**: `https://api.kago.lelar.ge` (injected at build time via `--dart-define=API_BASE_URL=...`)
+- **API**: `https://api.kago.lelar.ge` (injected at build time via `--dart-define=API_BASE_URL=...`)
 
 ### Screens
 

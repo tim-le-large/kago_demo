@@ -4,7 +4,17 @@ on:
   push:
     branches: [main]
     paths:
-      - "frontend/**"
+      - "lib/**"
+      - "web/**"
+      - "android/**"
+      - "ios/**"
+      - "macos/**"
+      - "windows/**"
+      - "linux/**"
+      - "test/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - "analysis_options.yaml"
       - ".github/workflows/deploy-frontend-pages.yml"
   workflow_dispatch:
 
@@ -29,24 +39,22 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        working-directory: frontend
         run: flutter pub get
 
       - name: Build web
-        working-directory: frontend
         env:
-          API_BASE_URL: https://api.kago.lelar.ge
+          API_BASE_URL: https://kago-api.lelar-ge.workers.dev
         run: |
           flutter build web --release \
             --dart-define=API_BASE_URL=$API_BASE_URL \
             --base-href /
 
       - name: Configure custom domain
-        run: echo "kago.lelar.ge" > frontend/build/web/CNAME
+        run: echo "kago.lelar.ge" > build/web/CNAME
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend/build/web
+          path: build/web
 
   deploy:
     runs-on: ubuntu-latest

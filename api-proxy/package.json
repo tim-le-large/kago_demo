@@ -1,0 +1,19 @@
+{
+  "name": "ka-abfahrt-api-proxy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260405.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^3.0.0"
+  }
+}
+

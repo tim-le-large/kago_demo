@@ -15,11 +15,11 @@ class ApiConfig {
       return fromEnv;
     }
     if (kIsWeb) {
-      return 'http://localhost:8080';
+      return 'http://127.0.0.1:8787';
     }
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:8080';
+      return 'http://10.0.2.2:8787';
     }
-    return 'http://localhost:8080';
+    return 'http://127.0.0.1:8787';
   }
 }
