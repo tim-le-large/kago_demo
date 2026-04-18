@@ -43,7 +43,7 @@ jobs:
 
       - name: Build web
         env:
-          API_BASE_URL: https://kago-api.lelar-ge.workers.dev
+          API_BASE_URL: https://api.kago.lelar.ge
         run: |
           flutter build web --release \
             --dart-define=API_BASE_URL=$API_BASE_URL \
