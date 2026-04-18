@@ -27,3 +27,5 @@ npx wrangler secret put TRIAS_REQUESTOR_REF
 npx wrangler deploy
 ```
 
+If your zone is in Cloudflare, you can bind the custom domain `api.kago.lelar.ge` either via the dashboard (Workers → Custom Domains) or via the `routes` config in `wrangler.toml`.
+
