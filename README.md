@@ -47,14 +47,14 @@ flutter pub get
 flutter run
 ```
 
-By default the app connects to `http://127.0.0.1:8787`. To change the API URL, edit `lib/config/api_config.dart` or set `--dart-define=API_BASE_URL=...`.
+The app connects to `https://api.kago.lelar.ge`.
 
 ### GitHub Pages (kago.lelar.ge)
 
 The web build is deployed via GitHub Actions to GitHub Pages.
 
 - **Frontend**: `https://kago.lelar.ge`
-- **API**: `https://api.kago.lelar.ge` (injected at build time via `--dart-define=API_BASE_URL=...`)
+- **API**: `https://api.kago.lelar.ge`
 
 ### Screens
 

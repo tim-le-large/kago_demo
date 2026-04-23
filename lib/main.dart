@@ -5,6 +5,8 @@ import 'config/api_config.dart';
 import 'departures/data/departures_repository.dart';
 import 'locations/bloc/locations_bloc.dart';
 import 'locations/data/location_repository.dart';
+import 'settings/bloc/settings_cubit.dart';
+import 'settings/data/settings_repository.dart';
 import 'shell/main_navigation_shell.dart';
 import 'trips/data/trips_repository.dart';
 
@@ -30,30 +32,39 @@ class KaAbfahrtApp extends StatelessWidget {
         ? FakeTripsRepository()
         : HttpTripsRepository();
 
-    final bannerText =
-        ApiConfig.useFakeLocations ? 'Demo ohne API' : ApiConfig.defaultBaseUrl;
-
+    final settingsRepository = SettingsRepository();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<LocationsRepository>.value(value: locationsRepository),
         RepositoryProvider<DeparturesRepository>.value(value: departuresRepository),
         RepositoryProvider<TripsRepository>.value(value: tripsRepository),
+        RepositoryProvider<SettingsRepository>.value(value: settingsRepository),
       ],
-      child: BlocProvider(
-        create: (_) => LocationsBloc(repository: locationsRepository),
-        child: MaterialApp(
-          title: 'KA Abfahrt',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-            useMaterial3: true,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => LocationsBloc(repository: locationsRepository)),
+          BlocProvider(
+            create: (_) => SettingsCubit(repository: settingsRepository)..load(),
           ),
-          home: const MainNavigationShell(),
-          debugShowCheckedModeBanner: false,
-          builder: (context, child) {
-            return Banner(
-              message: bannerText,
-              location: BannerLocation.bottomStart,
-              child: child ?? const SizedBox.shrink(),
+        ],
+        child: BlocBuilder<SettingsCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return MaterialApp(
+              title: 'KaGo',
+              themeMode: themeMode,
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+                useMaterial3: true,
+              ),
+              darkTheme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: Colors.teal,
+                  brightness: Brightness.dark,
+                ),
+                useMaterial3: true,
+              ),
+              home: const MainNavigationShell(),
+              debugShowCheckedModeBanner: false,
             );
           },
         ),

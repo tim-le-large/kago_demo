@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../locations/presentation/locations_screen.dart';
+import '../settings/presentation/settings_screen.dart';
 import '../trips/presentation/trip_search_screen.dart';
 
 class MainNavigationShell extends StatefulWidget {
@@ -22,6 +23,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         children: const [
           LocationsScreen(),
           TripSearchScreen(),
+          SettingsScreen(),
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -37,6 +39,11 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
             icon: Icon(Icons.alt_route_outlined),
             selectedIcon: Icon(Icons.alt_route),
             label: 'Verbindung',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
