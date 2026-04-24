@@ -1,12 +1,16 @@
-## ka_abfahrt API Proxy (Cloudflare Worker)
+# KaGo API proxy (Cloudflare Worker)
 
-This replaces the former Spring Boot backend. It keeps `TRIAS_REQUESTOR_REF` server-side and exposes the same JSON REST API used by the Flutter app:
+Minimal **TRIAS → JSON** bridge for the [KaGo](../README.md) Flutter app. Keeps `TRIAS_REQUESTOR_REF` on the server and exposes the REST shape the client expects.
 
-- `GET /api/v1/locations?q=...&limit=...`
-- `GET /api/v1/departures?stopRef=...&when=...&limit=...`
+## Endpoints
+
+- `GET /api/v1/locations?q=…&limit=…`
+- `GET /api/v1/departures?stopRef=…&when=…&limit=…`
 - `POST /api/v1/trips`
 
-### Local dev
+Full context, architecture, and Flutter integration: **[root README](../README.md)**.
+
+## Local development
 
 ```bash
 cd api-proxy
@@ -16,9 +20,9 @@ export TRIAS_REQUESTOR_REF="your-ref"
 npm run dev
 ```
 
-The worker will be available at `http://127.0.0.1:8787`.
+Worker URL defaults to `http://127.0.0.1:8787`.
 
-### Deploy (Cloudflare)
+## Deploy (Cloudflare)
 
 ```bash
 cd api-proxy
@@ -27,5 +31,4 @@ npx wrangler secret put TRIAS_REQUESTOR_REF
 npx wrangler deploy
 ```
 
-If your zone is in Cloudflare, you can bind the custom domain `api.kago.lelar.ge` either via the dashboard (Workers → Custom Domains) or via the `routes` config in `wrangler.toml`.
-
+Custom domains (e.g. `api.kago.lelar.ge`) can be attached in the Workers dashboard or via `routes` in `wrangler.toml`.

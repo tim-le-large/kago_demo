@@ -19,6 +19,17 @@ class Departure extends Equatable {
     );
   }
 
+  /// TRIAS / HTTP may use `YYYY-MM-DD HH:MM:SS` or ISO-8601; normalize for [DateTime.tryParse].
+  static DateTime? parsePlannedTime(String raw) {
+    final t = raw.trim();
+    if (t.isEmpty) return null;
+    var s = t;
+    if (RegExp(r'^\d{4}-\d{2}-\d{2} \d{2}:').hasMatch(s)) {
+      s = '${s.substring(0, 10)}T${s.substring(11)}';
+    }
+    return DateTime.tryParse(s);
+  }
+
   @override
   List<Object?> get props => [line, destination, plannedTime];
 }

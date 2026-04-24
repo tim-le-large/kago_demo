@@ -1,5 +1,5 @@
 name: kago
-description: KaGo – Haltestellen, Abfahrten, Verbindungen (KVV TRIAS).
+description: KaGo — Flutter demo for KVV stops, departures, and trips (TRIAS via Worker).
 publish_to: 'none'
 version: 1.0.0+1
 

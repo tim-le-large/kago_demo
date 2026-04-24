@@ -14,6 +14,9 @@ coverage/
 .idea/
 *.iml
 
+# Dart / Flutter DevTools local preferences (optional)
+devtools_options.yaml
+
 # API proxy (Node)
 api-proxy/node_modules/
 api-proxy/.wrangler/

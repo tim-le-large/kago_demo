@@ -8,14 +8,15 @@ class SettingsCubit extends Cubit<ThemeMode> {
 
   SettingsCubit({required SettingsRepository repository})
       : _repository = repository,
-        super(ThemeMode.system);
+        super(ThemeMode.light);
 
   Future<void> load() async {
     final mode = await _repository.loadThemeMode();
     emit(mode);
   }
 
-  Future<void> setThemeMode(ThemeMode mode) async {
+  Future<void> setDarkMode(bool enabled) async {
+    final mode = enabled ? ThemeMode.dark : ThemeMode.light;
     emit(mode);
     await _repository.saveThemeMode(mode);
   }

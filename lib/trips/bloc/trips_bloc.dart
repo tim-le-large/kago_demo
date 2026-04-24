@@ -23,7 +23,10 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
     TripsSearchRequested event,
     Emitter<TripsState> emit,
   ) async {
-    emit(TripsLoading());
+    final keepShowingResults = state is TripsLoaded;
+    if (!keepShowingResults) {
+      emit(TripsLoading());
+    }
     try {
       final journeys = await _repository.searchTrips(
         event.originRef,

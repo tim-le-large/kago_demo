@@ -8,18 +8,17 @@ class SettingsRepository {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_themeModeKey);
     return switch (raw) {
-      'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
-      _ => ThemeMode.system,
+      'light' || 'system' || null => ThemeMode.light,
+      _ => ThemeMode.light,
     };
   }
 
   Future<void> saveThemeMode(ThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
     final raw = switch (mode) {
-      ThemeMode.light => 'light',
       ThemeMode.dark => 'dark',
-      ThemeMode.system => 'system',
+      ThemeMode.light || ThemeMode.system => 'light',
     };
     await prefs.setString(_themeModeKey, raw);
   }

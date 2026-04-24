@@ -391,7 +391,30 @@ function parseDepartures(xml: string): unknown[] {
     const d = parseStopEvent(el);
     if (d) out.push(d);
   }
+  out.sort((a, b) => {
+    const ta = Date.parse((a as { plannedTime?: string }).plannedTime ?? "");
+    const tb = Date.parse((b as { plannedTime?: string }).plannedTime ?? "");
+    if (Number.isNaN(ta) && Number.isNaN(tb)) return 0;
+    if (Number.isNaN(ta)) return 1;
+    if (Number.isNaN(tb)) return -1;
+    return ta - tb;
+  });
   return out;
+}
+
+/** Departure at the requested stop: ThisCall → ServiceDeparture (not Previous/Onward). */
+function departureTimeFromThisCall(stopEvent: any): string | null {
+  const thisCall = stopEvent?.ThisCall;
+  if (!thisCall || typeof thisCall !== "object") return null;
+  const atStops = arrayify(thisCall.CallAtStop);
+  const atStop = atStops[0];
+  if (!atStop) return null;
+  const dep = atStop.ServiceDeparture ?? atStop.CallDeparture ?? null;
+  if (!dep) return null;
+  const est = firstDescendantText(dep, "EstimatedTime");
+  if (est?.trim()) return est.trim();
+  const tim = firstDescendantText(dep, "TimetabledTime");
+  return tim?.trim() ?? null;
 }
 
 function parseStopEvent(stopEvent: any): any | null {
@@ -399,7 +422,8 @@ function parseStopEvent(stopEvent: any): any | null {
   let line = service ? triasText(service, "PublishedLineName") : null;
   if (!line && service) line = triasText(service, "LineName");
 
-  let planned = firstDescendantText(stopEvent, "TimetabledTime");
+  let planned = departureTimeFromThisCall(stopEvent);
+  if (!planned) planned = firstDescendantText(stopEvent, "TimetabledTime");
   if (!planned) planned = firstDescendantText(stopEvent, "EstimatedTime");
 
   let dest = service ? triasText(service, "DestinationText") : null;

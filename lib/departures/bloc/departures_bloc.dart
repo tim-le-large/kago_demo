@@ -23,10 +23,21 @@ class DeparturesBloc extends Bloc<DeparturesEvent, DeparturesState> {
     DeparturesLoadRequested event,
     Emitter<DeparturesState> emit,
   ) async {
-    emit(DeparturesLoading());
+    final showFullScreenLoader = state is! DeparturesLoaded;
+    if (showFullScreenLoader) {
+      emit(DeparturesLoading());
+    }
     try {
       final list = await _repository.fetchDepartures(event.stopRef);
-      emit(DeparturesLoaded(list));
+      final sorted = [...list]..sort((a, b) {
+          final ta = Departure.parsePlannedTime(a.plannedTime);
+          final tb = Departure.parsePlannedTime(b.plannedTime);
+          if (ta == null && tb == null) return 0;
+          if (ta == null) return 1;
+          if (tb == null) return -1;
+          return ta.compareTo(tb);
+        });
+      emit(DeparturesLoaded(sorted));
     } catch (e) {
       emit(DeparturesFailure(e.toString()));
     }

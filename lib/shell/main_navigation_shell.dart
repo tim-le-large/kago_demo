@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../locations/presentation/locations_screen.dart';
-import '../settings/presentation/settings_screen.dart';
 import '../trips/presentation/trip_search_screen.dart';
 
 class MainNavigationShell extends StatefulWidget {
@@ -16,6 +15,8 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: IndexedStack(
         index: _index,
@@ -23,29 +24,55 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         children: const [
           LocationsScreen(),
           TripSearchScreen(),
-          SettingsScreen(),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.hub_outlined),
-            selectedIcon: Icon(Icons.hub),
-            label: 'Haltestellen',
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: [
+              BoxShadow(
+                color: colorScheme.shadow.withValues(alpha: 0.08),
+                blurRadius: 18,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.alt_route_outlined),
-            selectedIcon: Icon(Icons.alt_route),
-            label: 'Verbindung',
+          child: Material(
+            color: colorScheme.surfaceContainer,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(28),
+              side: BorderSide(
+                color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+              ),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: NavigationBar(
+              backgroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              selectedIndex: _index,
+              onDestinationSelected: (i) => setState(() => _index = i),
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.location_on_outlined),
+                  selectedIcon: Icon(Icons.location_on),
+                  label: 'Haltestellen',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.route_outlined),
+                  selectedIcon: Icon(Icons.route_rounded),
+                  label: 'Verbindung',
+                ),
+              ],
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
+        ),
       ),
     );
   }
