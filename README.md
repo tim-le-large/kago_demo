@@ -135,6 +135,33 @@ flutter run --dart-define=USE_FAKE_LOCATIONS=true
 
 ---
 
+## Tests
+
+The repo includes **lightweight tests** you can extend as the app grows:
+
+| File | What it covers |
+|------|----------------|
+| `test/departure_test.dart` | `Departure.fromJson`, `Departure.parsePlannedTime` (ISO + space-separated dates) |
+| `test/location_test.dart` | `Location.fromJson` |
+| `test/trip_model_test.dart` | `Leg.isWalk`, `Journey.fromJson` |
+| `test/widget_test.dart` | App boots, **Haltestellen** empty state; switching to **Verbindung** shows the trip search subtitle (`SharedPreferences` mocked; surface size set for layout) |
+
+Run everything:
+
+```bash
+flutter test
+```
+
+Run a single file:
+
+```bash
+flutter test test/departure_test.dart
+```
+
+Tests do **not** call the real API on load (search is idle until you type). No `dart-define` is required for `flutter test`.
+
+---
+
 ## Security
 
 Do **not** commit `TRIAS_REQUESTOR_REF` or embed it in the app. The Worker holds the secret; the Flutter client only sees public JSON. Copy `.env.example` to `.env` for local proxy usage (see `api-proxy` docs).
